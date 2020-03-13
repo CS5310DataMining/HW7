@@ -1,0 +1,56 @@
+##Homework7
+
+#Team 6:
+#Rahim Abdulmalik 33.3%
+#Raul Beiza 33.3%
+#Melvin Zaldivar 33.3%
+
+#Libraries Used
+library(tidyverse)
+#=================================================
+
+#Problem 1 Simple Regression
+
+#Import/Preprocessing
+Auto <- read.csv('Auto.csv', stringsAsFactors = FALSE)
+str(Auto)
+Auto$horsepower <- as.numeric(Auto$horsepower)
+#Handle NA values with Mean
+summary(Auto$horsepower)
+Auto <- Auto %>% 
+  mutate(horsepower = ifelse(is.na(horsepower), 104.5, 
+                             horsepower))
+
+#Simple Regression
+AutoReg <- lm(mpg ~ horsepower, Auto) 
+plot(Auto$horsepower, Auto$mpg)
+abline(AutoReg)
+
+#Analysis
+summary(AutoReg)
+cor(Auto$horsepower, Auto$mpg)
+
+#98 horsepower
+AutoReg
+Horse98 <- AutoReg$coefficients[1] + 
+  (AutoReg$coefficients[2]* 98)
+Horse98
+#==============================================
+
+#Problem 2 Multiple Regression
+
+#Scatterplot Matrix
+str(Auto[-9])
+Auto2 <- Auto[-9]
+pairs(Auto2)
+
+#Correlation Strength
+cor(Auto2)
+AutoReg2 <- lm(mpg ~ ., Auto2)
+summary(AutoReg2)
+
+#Interaction Effects
+#summary(lm(mpg ~ . + acceleration*cylinders, Auto2))
+
+#Attempted with multiple variable was unable to find any
+#Interaction effects that were significant
